@@ -1,18 +1,24 @@
 import streamlit as st
-from summarizer import generar_resumen
+from summarizer import summarize
+from developer import expand
 
-st.set_page_config(page_title="Generador de Resúmenes IA", layout="centered")
+st.set_page_config(page_title="AI Generator: Summarize or Expand", layout="centered")
 
-st.title("📝 Generador de Resúmenes IA")
-st.write("Ingresa un texto largo y obtén un resumen generado por inteligencia artificial.")
+st.title("📝 AI Thing")
+st.write("Choose if you want to summarize or expand your text using artificial intelligence.")
 
-texto = st.text_area("Texto a resumir:", height=200)
+mode = st.selectbox("What do you want to do?", ["Summarize", "Expand"])
+text = st.text_area("Text:", height=200)
 
-if st.button("Generar resumen"):
-    if texto.strip():
-        with st.spinner("Procesando..."):
-            resumen = generar_resumen(texto)
-        st.subheader("Resumen generado:")
-        st.success(resumen)
+if st.button("Process"):
+    if text.strip():
+        with st.spinner("Processing..."):
+            if mode == "Summarize":
+                result = summarize(text)
+                st.subheader("Generated summary:")
+            else:
+                result = expand(text)
+                st.subheader("Expanded text:")
+        st.success(result)
     else:
-        st.warning("Por favor, ingresa algún texto para resumir.")
+        st.warning("Please enter some text to process.")
